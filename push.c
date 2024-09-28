@@ -1,37 +1,17 @@
-#include "monty.h"
-#include <ctype.h>
+#include "main.h"
 
 /**
- * push - Pushes an element to the stack
+ * push - Pushes an integer onto the stack
  * @stack: Double pointer to the stack
- * @line_number: Line number where the opcode appears
- */
-void push(stack_t **stack, unsigned int line_number)
-{
-    char *arg = strtok(NULL, " \n");
-    stack_t *new_node;
-    int n;
-
-    if (arg == NULL || !isdigit(arg[0]))
-    {
-        fprintf(stderr, "L%u: usage: push integer\n", line_number);
-        exit(EXIT_FAILURE);
-    }
-
-    n = atoi(arg);
-    new_node = malloc(sizeof(stack_t));
-    if (new_node == NULL)
-    {
+ * @line_number: Current line number in the bytecode file
+ **/
+void push(stack_t **stack, unsigned int line_number) {
+    stack_t *new_node = malloc(sizeof(stack_t));
+    if (!new_node) {
         fprintf(stderr, "Error: malloc failed\n");
         exit(EXIT_FAILURE);
     }
-
-    new_node->n = n;
-    new_node->prev = NULL;
+    new_node->n = line_number;
     new_node->next = *stack;
-
-    if (*stack != NULL)
-        (*stack)->prev = new_node;
-
     *stack = new_node;
 }
